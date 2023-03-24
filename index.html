@@ -27,7 +27,16 @@
         <div> <span style="color:#ffe0178a; font-size: 10px;"> DeBox开发者社群 | 2023</span></div>
     </div>
 
-    <div id="container"></div>
+    <div id="container" style="background-color: #fff;
+    background-image: url(./bg.png) ;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0; "></div>
     <script id="vertexShader" type="x-shader/x-vertex">
 
         varying vec2 vUv;
@@ -333,71 +342,83 @@ vec3 cameraPath( float t )
     </script>
     <script>
 
+        var system = {};
+        var p = navigator.platform;
+        system.win = p.indexOf("Win") == 0;
+        system.mac = p.indexOf("Mac") == 0;
+        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+        if (system.win || system.mac || system.xll) {//如果是电脑跳转到
+            // pc()
+        }
         document.oncontextmenu = (e) => {
             e.preventDefault()
         }
-        let camera, scene, renderer;
-        const textureLoader = new THREE.TextureLoader();
-        let uniforms = {
-            iTime: { value: 0 },
-            iResolution: { value: new THREE.Vector3(window.innerWidth*2, window.innerHeight*2, 1) },
-            iChannel0: { type: 't', value: textureLoader.load('a.png') },
-            iChannel1: { type: 't', value: textureLoader.load('b.png') },
-
-        };
-        iResolution: { value: new THREE.Vector3(40, 40, 1) }
-        init();
-        animate();
-
-        function init() {
-
-            const container = document.getElementById('container');
-
-            camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
-
-            scene = new THREE.Scene();
-
-            const geometry = new THREE.PlaneGeometry(2, 2);
+        function pc() {
 
 
+            let camera, scene, renderer;
+            const textureLoader = new THREE.TextureLoader();
+            let uniforms = {
+                iTime: { value: 0 },
+                iResolution: { value: new THREE.Vector3(window.innerWidth, window.innerHeight, 1) },
+                iChannel0: { type: 't', value: textureLoader.load('a.png') },
+                iChannel1: { type: 't', value: textureLoader.load('b.png') },
 
-            const material = new THREE.ShaderMaterial({
+            };
+            iResolution: { value: new THREE.Vector3(40, 40, 1) }
+            init();
+            animate();
 
-                uniforms: uniforms,
-                vertexShader: document.getElementById('vertexShader').textContent,
-                fragmentShader: document.getElementById('fragmentShader').textContent
+            function init() {
 
-            });
+                const container = document.getElementById('container');
 
-            const mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
+                camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
 
-            renderer = new THREE.WebGLRenderer();
-            renderer.setPixelRatio(window.devicePixelRatio);
-            container.appendChild(renderer.domElement);
+                scene = new THREE.Scene();
 
-            onWindowResize();
+                const geometry = new THREE.PlaneGeometry(2, 2);
 
-            window.addEventListener('resize', onWindowResize);
 
-        }
 
-        function onWindowResize() {
+                const material = new THREE.ShaderMaterial({
 
-            renderer.setSize(window.innerWidth, window.innerHeight);
+                    uniforms: uniforms,
+                    vertexShader: document.getElementById('vertexShader').textContent,
+                    fragmentShader: document.getElementById('fragmentShader').textContent
 
-        }
+                });
 
-        //
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
 
-        function animate() {
+                renderer = new THREE.WebGLRenderer();
+                renderer.setPixelRatio(window.devicePixelRatio);
+                container.appendChild(renderer.domElement);
 
-            requestAnimationFrame(animate);
+                onWindowResize();
 
-            uniforms['iTime'].value = performance.now() / 1000;
+                window.addEventListener('resize', onWindowResize);
 
-            renderer.render(scene, camera);
+            }
 
+            function onWindowResize() {
+
+                renderer.setSize(window.innerWidth, window.innerHeight);
+
+            }
+
+            //
+
+            function animate() {
+
+                requestAnimationFrame(animate);
+
+                uniforms['iTime'].value = performance.now() / 1000;
+
+                renderer.render(scene, camera);
+
+            }
         }
     </script>
 </body>
