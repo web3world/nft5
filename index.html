@@ -340,7 +340,7 @@ vec3 cameraPath( float t )
         const textureLoader = new THREE.TextureLoader();
         let uniforms = {
             iTime: { value: 0 },
-            iResolution: { value: new THREE.Vector3(window.innerWidth, window.innerHeight, 1) },
+            iResolution: { value: new THREE.Vector3(window.innerWidth*2, window.innerHeight*2, 1) },
             iChannel0: { type: 't', value: textureLoader.load('a.png') },
             iChannel1: { type: 't', value: textureLoader.load('b.png') },
 
